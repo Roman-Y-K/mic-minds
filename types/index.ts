@@ -28,13 +28,13 @@ export interface TopPodcastersProps {
 export interface PodcastProps {
   _id: Id<'podcasts'>;
   _creationTime: number;
-  audioStorageId: Id<'_storage'> | null;
+  audioStorageId: Id<'_storage'>;
   user: Id<'users'>;
   podcastTitle: string;
   podcastDescription: string;
   audioUrl: string | null;
   imageUrl: string | null;
-  imageStorageId: Id<'_storage'> | null;
+  imageStorageId: Id<'_storage'>;
   author: string;
   authorId: string;
   authorImageUrl: string;
@@ -80,11 +80,11 @@ export interface LatestPodcastCardProps {
 }
 
 export interface PodcastDetailPlayerProps {
-  audioUrl: string;
+  audioUrl?: string;
   podcastTitle: string;
   author: string;
   isOwner: boolean;
-  imageUrl: string;
+  imageUrl?: string;
   podcastId: Id<'podcasts'>;
   imageStorageId: Id<'_storage'>;
   audioStorageId: Id<'_storage'>;
@@ -113,7 +113,7 @@ export interface PodcastCardProps {
 }
 
 export interface CarouselProps {
-  fansLikeDetail: TopPodcastersProps[];
+  itemsList: TopPodcastersProps[];
 }
 
 export interface ProfileCardProps {

@@ -1,14 +1,17 @@
 'use client';
 
+import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { Loader } from 'lucide-react';
+import { useMutation } from 'convex/react';
+import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -24,16 +27,12 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
-import { useState } from 'react';
 import { Textarea } from '@/components/ui/textarea';
 import GeneratePodcast from '@/components/GeneratePodcast';
 import GenerateThumbnail from '@/components/GenerateThumbnail';
-import { Loader } from 'lucide-react';
 import { Id } from '@/convex/_generated/dataModel';
 import { useToast } from '@/hooks/use-toast';
-import { useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
-import { useRouter } from 'next/navigation';
 
 const voiceCategories = ['alloy', 'shimmer', 'nova', 'echo', 'fable', 'onyx'];
 
@@ -61,10 +60,10 @@ const CreatePodcast = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  //   const createPodcast = useMutation(api.podcasts.createPodcast);
+  const createPodcast = useMutation(api.podcasts.createPodcast);
 
   const { toast } = useToast();
-  // 1. Define your form.
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -84,19 +83,19 @@ const CreatePodcast = () => {
         throw new Error('Please generate audio and image');
       }
 
-      //   const podcast = await createPodcast({
-      //     podcastTitle: data.podcastTitle,
-      //     podcastDescription: data.podcastDescription,
-      //     audioUrl,
-      //     imageUrl,
-      //     voiceType,
-      //     imagePrompt,
-      //     voicePrompt,
-      //     views: 0,
-      //     audioDuration,
-      //     audioStorageId: audioStorageId!,
-      //     imageStorageId: imageStorageId!,
-      //   });
+      await createPodcast({
+        podcastTitle: data.podcastTitle,
+        podcastDescription: data.podcastDescription,
+        audioUrl,
+        imageUrl,
+        voiceType,
+        imagePrompt,
+        voicePrompt,
+        views: 0,
+        audioDuration,
+        audioStorageId: audioStorageId!,
+        imageStorageId: imageStorageId!,
+      });
       toast({ title: 'Podcast created' });
       setIsSubmitting(false);
       router.push('/');
@@ -209,11 +208,11 @@ const CreatePodcast = () => {
             />
 
             <GenerateThumbnail
-            // setImage={setImageUrl}
-            // setImageStorageId={setImageStorageId}
-            // image={imageUrl}
-            // imagePrompt={imagePrompt}
-            // setImagePrompt={setImagePrompt}
+              setImage={setImageUrl}
+              setImageStorageId={setImageStorageId}
+              image={imageUrl}
+              imagePrompt={imagePrompt}
+              setImagePrompt={setImagePrompt}
             />
 
             <div className="mt-10 w-full">

@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 import { Loader } from 'lucide-react';
 import { useAction, useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
+import { Id } from '@/convex/_generated/dataModel';
 import { v4 as uuidv4 } from 'uuid';
 import { useUploadFiles } from '@xixixao/uploadstuff/react';
 
-import { Label } from '../ui/label';
-import { Textarea } from '../ui/textarea';
-import { Button } from '../ui/button';
 import { GeneratePodcastProps } from '@/types';
 import { useToast } from '@/hooks/use-toast';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
 
 const useGeneratePodcast = ({
   setAudio,
@@ -48,7 +49,9 @@ const useGeneratePodcast = ({
       const file = new File([blob], fileName, { type: 'audio/mpeg' });
 
       const uploaded = await startUpload([file]);
-      const storageId = (uploaded[0].response as any).storageId;
+
+      const storageId = (uploaded[0].response as { storageId: Id<'_storage'> })
+        .storageId;
 
       setAudioStorageId(storageId);
 
