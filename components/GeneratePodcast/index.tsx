@@ -27,7 +27,10 @@ const useGeneratePodcast = ({
 
   const { startUpload } = useUploadFiles(generateUploadUrl);
 
-  const generatePodcast = async () => {
+  const generatePodcast = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
     setIsGenerating(true);
     setAudio('');
 
@@ -71,17 +74,18 @@ const useGeneratePodcast = ({
     }
   };
 
-  return { isGenerating, generatePodcast };
+  return { isGenerating, generatePodcast, voiceType, voicePrompt };
 };
 
 const GeneratePodcast = (props: GeneratePodcastProps) => {
-  const { isGenerating, generatePodcast } = useGeneratePodcast(props);
+  const { isGenerating, generatePodcast, voiceType, voicePrompt } =
+    useGeneratePodcast(props);
 
   return (
     <div>
       <div className="flex flex-col gap-2.5">
         <Label className="text-16 font-bold text-white-1">
-          AI Prompt to generate Podcast
+          AI Prompt to generate Podcast*
         </Label>
         <Textarea
           className="input-class font-light focus-visible:ring-offset-orange-1"
@@ -96,6 +100,7 @@ const GeneratePodcast = (props: GeneratePodcastProps) => {
           type="submit"
           className="text-16 bg-orange-1 py-4 font-bold text-white-1"
           onClick={generatePodcast}
+          disabled={!voiceType || !voicePrompt || isGenerating}
         >
           {isGenerating ? (
             <>

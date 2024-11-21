@@ -32,8 +32,8 @@ export interface PodcastProps {
   user: Id<'users'>;
   podcastTitle: string;
   podcastDescription: string;
-  audioUrl: string | null;
-  imageUrl: string | null;
+  audioUrl: string;
+  imageUrl: string;
   imageStorageId: Id<'_storage'>;
   author: string;
   authorId: string;
@@ -103,6 +103,8 @@ export interface AudioProps {
 export interface AudioContextType {
   audio: AudioProps | undefined;
   setAudio: React.Dispatch<React.SetStateAction<AudioProps | undefined>>;
+  isPlaying: boolean;
+  setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface PodcastCardProps {

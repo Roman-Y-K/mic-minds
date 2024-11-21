@@ -11,11 +11,10 @@ import { Progress } from '@/components/ui/progress';
 
 const PodcastPlayer = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
-  const { audio } = useAudio();
+  const { audio, isPlaying, setIsPlaying } = useAudio();
 
   const togglePlayPause = () => {
     if (audioRef.current?.paused) {

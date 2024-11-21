@@ -125,7 +125,7 @@ const CreatePodcast = () => {
               render={({ field }) => (
                 <FormItem className="flex flex-col gap-2.5">
                   <FormLabel className="text-16 font-bold text-white-1">
-                    Title
+                    Title*
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -141,7 +141,7 @@ const CreatePodcast = () => {
 
             <div className="flex flex-col gap-2.5">
               <Label className="text-16 font-bold text-white-1">
-                Select AI Voice
+                Select AI Voice*
               </Label>
 
               <Select onValueChange={(value) => setVoiceType(value)}>
@@ -182,7 +182,7 @@ const CreatePodcast = () => {
               render={({ field }) => (
                 <FormItem className="flex flex-col gap-2.5">
                   <FormLabel className="text-16 font-bold text-white-1">
-                    Description
+                    Description*
                   </FormLabel>
                   <FormControl>
                     <Textarea
@@ -217,6 +217,12 @@ const CreatePodcast = () => {
 
             <div className="mt-10 w-full">
               <Button
+                disabled={
+                  !form.getValues().podcastDescription ||
+                  !audioUrl ||
+                  !imageUrl ||
+                  !voiceType
+                }
                 type="submit"
                 className="text-16 w-full bg-orange-1 py-4 font-extrabold text-white-1 transition-all duration-500 hover:bg-black-1"
               >

@@ -11,10 +11,11 @@ import { useRouter } from 'next/navigation';
 import Header from '../Header';
 import Carousel from '../Carousel';
 import { cn } from '@/lib/utils';
+import { useAudio } from '@/providers/AudioProvider';
 
 const RightSidebar = () => {
   const { user } = useUser();
-  const audio = {};
+  const { audio } = useAudio();
 
   const topPodcasters = useQuery(api.users.getTopUserByPodcastCount);
   const router = useRouter();
@@ -50,7 +51,6 @@ const RightSidebar = () => {
         <Header title="Top Podcastrs" />
         <div className="flex flex-col gap-6">
           {topPodcasters?.slice(0, 3).map((podcaster) => {
-            console.log(podcaster);
             return (
               <div
                 key={podcaster._id}

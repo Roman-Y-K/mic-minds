@@ -64,7 +64,17 @@ export const getTrendingPodcasts = query({
   handler: async (ctx) => {
     const podcast = await ctx.db.query('podcasts').collect();
 
-    return podcast.sort((a, b) => b.views - a.views).slice(0, 8);
+    return podcast.sort((a, b) => b.views - a.views).slice(0, 4);
+  },
+});
+
+export const getLatestPodcasts = query({
+  handler: async (ctx) => {
+    const podcast = await ctx.db.query('podcasts').collect();
+
+    return podcast
+      .sort((a, b) => b._creationTime - a._creationTime)
+      .slice(0, 8);
   },
 });
 
@@ -150,5 +160,38 @@ export const getPodcastBySearch = query({
         q.search('podcastDescription' || 'podcastTitle', args.search)
       )
       .take(10);
+  },
+});
+
+export const getPodcastByAuthorId = query({
+  args: {
+    authorId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const podcasts = await ctx.db
+      .query('podcasts')
+      .filter((q) => q.eq(q.field('authorId'), args.authorId))
+      .collect();
+
+    const totalListeners = podcasts.reduce(
+      (sum, podcast) => sum + podcast.views,
+      0
+    );
+
+    return { podcasts, listeners: totalListeners };
+  },
+});
+
+export const updatePodcastViews = mutation({
+  args: {
+    podcastId: v.id('podcasts'),
+  },
+  handler: async (ctx, args) => {
+    const podcast = await ctx.db.get(args.podcastId);
+    let currentViews = podcast?.views || 0;
+
+    await ctx.db.patch(args.podcastId, {
+      views: (currentViews += 1),
+    });
   },
 });

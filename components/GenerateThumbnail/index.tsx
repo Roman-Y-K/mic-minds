@@ -57,13 +57,18 @@ const GenerateThumbnail = ({
     }
   };
 
-  const generateImage = async () => {
+  const generateImage = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsImageLoading(true);
+
     try {
       const response = await handleGenerateThumbnail({ prompt: imagePrompt });
       const blob = new Blob([response], { type: 'image/png' });
       handleImage(blob, `thumbnail-${uuidv4()}`);
     } catch (error) {
       console.log(error);
+      setIsImageLoading(false);
       toast({ title: 'Error generating thumbnail', variant: 'destructive' });
     }
   };
@@ -112,7 +117,7 @@ const GenerateThumbnail = ({
         <div className="flex flex-col gap-5">
           <div className="mt-5 flex flex-col gap-2.5">
             <Label className="text-16 font-bold text-white-1">
-              AI Prompt to generate Thumbnail
+              AI Prompt to generate Thumbnail*
             </Label>
             <Textarea
               className="input-class font-light focus-visible:ring-offset-orange-1"
@@ -127,6 +132,7 @@ const GenerateThumbnail = ({
               type="submit"
               className="text-16 bg-orange-1 py-4 font-bold text-white-1"
               onClick={generateImage}
+              disabled={!imagePrompt || isImageLoading}
             >
               {isImageLoading ? (
                 <>
