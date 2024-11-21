@@ -81,6 +81,7 @@ const PodcastPlayer = () => {
       audioElement?.pause();
       setIsPlaying(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [audio]);
   const handleLoadedMetadata = () => {
     if (audioRef.current) {
